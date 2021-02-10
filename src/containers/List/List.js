@@ -1,38 +1,21 @@
 import React, { Component } from 'react';
-import Card from '../../components/Card/Card';
-import './List.css';
+//import { BrowserRouter as Route, Switch, NavLink, Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Trending from './Trending/Trending';
+import Movies from './Movies/Movies';
+import Tivi from './Tv/Tivi';
+import Popular from './Popular/Popular';
 class List extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            genres: [],
-            data: [],
-            loading: true,
-        };
-    }
-
-    async componentDidMount() {
-        const movies = await fetch('src/assets/movies.json');
-        const moviesJSON = await movies.json();
-
-        if(moviesJSON){
-            this.setState({
-                genres: moviesJSON['genres'],
-                data: moviesJSON['movies'],
-                loading: false,
-            });
-        }
-    }
-
-    render() {        
-        const {data, loading } = this.state;
+    render() {    
+        /*const {genres, data, loading } = this.state;
 
         if(loading){
             return <div>Loading...</div>;
-        }
+        }*/
 
         return (
+            /*
             <div className='row'>
               {data.map(movie => (
                 <div key={movie.id} className='col-sm-4'>
@@ -40,7 +23,27 @@ class List extends Component {
                 </div>
               ))}
             </div>
-          );
+            */
+           <div className="row">
+                <div className="col-md-9">
+                    <div className="trending">
+                        <Trending/>
+                    </div>
+                    <div className="container">
+                        <h4>Movies</h4>
+                        <Movies/>
+                    </div>
+                    <div className="container">
+                        <h4>Series</h4>
+                        <Tivi/>
+                    </div>
+                </div>
+                <div className="col-md-3">
+                    <h4 style={{textAlign: 'center', color: "purple"}}>Popular</h4>
+                    <Popular />
+                </div>
+           </div>
+        );
     }
 }
 

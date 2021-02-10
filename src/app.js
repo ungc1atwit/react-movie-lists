@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import List from './containers/List/List';
 import NavbarElement from './containers/Navbar/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter } from 'react-router-dom'
+import GlobalFonts from "./fonts/fonts";
+
 
 const App = () => {
     return (
@@ -16,5 +19,10 @@ const App = () => {
         </div>
     );
 };
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ 
+ReactDOM.render(
+    <BrowserRouter>
+        <GlobalFonts/>
+        <App/>
+    </BrowserRouter>,
+document.getElementById('root'));
