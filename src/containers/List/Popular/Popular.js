@@ -3,15 +3,26 @@ import Card from '../../../components/Card';
 import styled from 'styled-components';
 import Text from '../../../components/Text';
 import axios from 'axios';
+import { array } from 'prop-types';
 
 const StyledItem = styled.div`
 `;
-const StyledText = styled.div`
+const ButtonGroup = styled.div`
+    display: flex;
+    justify-content: space-around;
 `; 
-const Overview = styled.p`
+const ButtonToggle = styled.button`
+    border-radius: 15px 0 15px 0;
+    border: 2px solid palevioletred;
+`;
+
+const Genres = styled.p`
     font-size: 8pt;
     font-family: "Font SpaceMono";
     width: 200px;
+`;
+const Vote = styled(Genres)`
+
 `;
 const Item = styled.div`
     display: flex;
@@ -19,46 +30,43 @@ const Item = styled.div`
     justify-content: center;
 `;
 
-const genres = () =>{
-
-}
-
+const types = ["Movies", "Series"];
 class Movies extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             movies: [],
+            isToggle: true,
             type: "movie",
-            genrs: [],
+            genres: [],
             loading: true
         }
     }
 
-    async componentDidMount() { 
-        let genres = [];
-        let data = (await fetch("src/assets/genre_" + this.state.type + ".json"))
-            .json()
-            .then(response => {
-                for(const value of response.genres){
-                    genres.push(value);
-                }
-            })
-            .catch(e =>{
-                console.log(`Error: ${e.message}`);
-            });           
-            
+    async componentDidMount() {             
+        // Fetching the lists of top rated of {movies, tvs}    
         try{
             let movieLists = await axios.get(process.env.MOVIEDB_API_URL + this.state.type + "/top_rated?api_key=" + process.env.MOVIEDB_API_KEY + "&page=1");
+            let results = movieLists.data.results;
+
+            for(const value of results){
+                let genreLists = [];
+                let dataLists = await axios.get(process.env.MOVIEDB_API_URL + this.state.type + "/" + value.id +  "?api_key=" + process.env.MOVIEDB_API_KEY);
+
+                for(const genreObject of dataLists.data.genres){
+                    genreLists.push(genreObject.name);
+                }
+                value["genres"] = genreLists;
+            }
 
             this.setState({
-                movies: movieLists.data.results,
+                movies: results,
                 loading: false
             });
         } catch(error){
             console.log("Error: " + error.message);
         } 
-    
     }
 
     render(){
@@ -66,23 +74,26 @@ class Movies extends Component {
 
         if(loading){
             return (
-                <div className="laoding">
+                <div className="loading">
                     <p>Loading...</p>
                 </div>
             )
         }
+
         return(
             <StyledItem>
-                <div className="col-sm-6">Movies</div>
-                <div className="col-sm-6">Tv</div>
+                <ButtonGroup className="btn-group btn-group-toggle" data-toggle="button">
+                    <ButtonToggle className="col-sm-6">Movies</ButtonToggle>    
+                    <ButtonToggle className="col-sm-6">Series</ButtonToggle>          
+                </ButtonGroup>
             {movies.map((popularData) => (
                 <Item key={popularData.id}>
                     <Card width="60rem" data = {popularData}/>
-                    <StyledText>
+                    <div>
                         <Text width="200px" data={popularData}/>
-
-                        <Overview>{popularData.vote_average}</Overview>
-                    </StyledText>
+                        <Genres>Genres: {popularData.genres.join(", ")}</Genres>
+                        <Vote>Average: {popularData.vote_average}</Vote>
+                    </div>
                 </Item>
             ))}
             </StyledItem>
