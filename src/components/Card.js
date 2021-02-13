@@ -7,7 +7,7 @@ const posterUrl = process.env.IMAGE_TMDB_URL;
 
 const Image = styled.img`
     border-radius: 15px;
-    box-shadow: 5px 1px 5px 1px;
+    //box-shadow: 5px 1px 5px 1px;
     margin-right: 5px;
 `;
 

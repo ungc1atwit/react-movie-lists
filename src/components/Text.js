@@ -1,23 +1,21 @@
 import React from 'react';
 import styled from "styled-components";
 
-const StyledText = styled.h2`
+const StyledText = styled.p`
     font-family: "Font SpaceMono";
-    font-size: 8pt;
+    font-size: 10pt;
     text-align: center;
     margin-top: 0.3rem;
-    border: 2px solid;
-    width: ${props => props.width};
 `;
 
-const Text = ({data, width}) =>{
+const Text = ({data, width, color}) =>{
     let title = data.title ? data.title : data.name;
     let year = data.release_date ? data.release_date.split("-")[0] : data.first_air_date.split("-")[0];
 
     return(
-        <StyledText width={width}>
+        <StyledText width={width} color={color}>
             {title}
-            <br/>
+            <span style={{padding: "0.1em"}}></span>
             ({year})
         </StyledText>
     )
