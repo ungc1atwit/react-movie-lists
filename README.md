@@ -1,6 +1,6 @@
 # Movie List Project
 > A web app for visualizing the list of movies and series. Let the users able to rate and add the movies or series to their favorite lists.
-=====================================
+
 ### Build with a bunch of tools - the list is named below:
  
 - [TMDB API](https://www.themoviedb.org/documentation/api)
